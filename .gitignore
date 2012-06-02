@@ -1,0 +1,9 @@
+# Compiled source #
+###################
+*.o
+*.*~
+lexer.c
+parser.c
+lexer.h
+parser.h
+ConsolaControl
