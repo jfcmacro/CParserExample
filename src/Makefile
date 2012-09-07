@@ -11,7 +11,7 @@ OBJECTS=$(SRC:.c=.o)
 parser.c parser.h: parser.y Tokens.h
 	bison -W -o parser.c --defines=parser.h parser.y
 
-lexer.c lexer.h: lexer.l parser.h
+lexer.c lexer.h: lexer.l
 	flex --outfile=$@ --header-file=lexer.h $<
 
 ConsolaControl: $(OBJECTS) 
