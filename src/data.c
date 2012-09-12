@@ -1,8 +1,9 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "data.h"
 
-static char*
+char*
 newCopyString(char n[]){
   char *p;
   int longitud;
@@ -28,9 +29,9 @@ createProcesoSuicida(char id[], char ruta[], char nombreArchivo[],
   pprocesoSuicida_t ps;
 
   ps = (pprocesoSuicida_t) malloc(sizeof(procesoSuicida_t));
-  ps->id = newCopyString(id);
-  ps->ruta = newCopyString(ruta);
-  ps->nombreArchivo = newCopyString(nombreArchivo);
+  ps->id = id ;
+  ps->ruta = ruta;
+  ps->nombreArchivo = nombreArchivo;
   ps->contadorActual = ps->contadorInicial = contador;
 
   return ps;
@@ -49,5 +50,15 @@ addLista(plProcesosSuicidas_t head, pprocesoSuicida_t ps) {
   return nHead;
 }
 
-
+void
+showLProcesosSuicidas(plProcesosSuicidas_t list) {
+  while (list) {
+    pprocesoSuicida_t ps = list->ps;
+    fprintf(stdout, 
+	    "id: %s ruta: %s nombre archivo: %s actual: %d inicial: %d\n", 
+	    ps->id, ps->ruta, ps->nombreArchivo,
+	    ps->contadorActual, ps->contadorInicial);
+    list = list->next;
+  }
+}
 

@@ -19,6 +19,7 @@ struct LProcesosSuicidas {
   plProcesosSuicidas_t next;
 };
 
+char* newCopyString(char n[]);
 void deleteStructProcesoSuicida(pprocesoSuicida_t ps);
 pprocesoSuicida_t createProcesoSuicida(char id[], char ruta[],
 				       char nombreArchivo[],
@@ -26,4 +27,5 @@ pprocesoSuicida_t createProcesoSuicida(char id[], char ruta[],
 plProcesosSuicidas_t newLProcesosSuicidas();
 plProcesosSuicidas_t addLista(plProcesosSuicidas_t head,
 			      pprocesoSuicida_t ps);
+void showLProcesosSuicidas(plProcesosSuicidas_t list);
 #endif

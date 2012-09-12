@@ -3,12 +3,15 @@
 #include <stdlib.h>
 #include "parser.h"
 #include "lexer.h"
+#include "data.h"
 
 void
 usage(char *progname) {
-  fprintf(stderr, "Usage %s <cfg file>", progname);
+  fprintf(stderr, "Usage %s <cfg file>\n", progname);
   exit(1);
 }
+
+extern int yyparse();
 
 int 
 main(int argc, char *argv[]) {
@@ -21,10 +24,12 @@ main(int argc, char *argv[]) {
   if (!inFile) {
     usage(argv[0]);
   }
+
   yyin = inFile;
 
   if (!yyparse()) {
     fprintf(stdout, "¡Parser funcionó!\n");
+    showLProcesosSuicidas(yylval.vlista);
   }
   else {
     fprintf(stderr, "¡Parser no funcionó!\n");

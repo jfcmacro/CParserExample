@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "data.h"
+
+int yylex();
+void yyerror(const char *msg);
 %}
 
 %union {
@@ -14,16 +17,20 @@
 %token PROCESOSUI ABRELLAVE CIERRALLAVE SEPARATOR
 %token <vtext>   ID PATH
 %token <vnumber> NUMERO
-%start archcfg
+%start abssyn
+%type <vlista> abssyn
 %type <vlista> archcfg
 %type <vps> proceso
 %%
 
-archcfg : /* empty */     { $$ = (plProcesosSuicidas_t) NULL; }
-| proceso archcfg { $$ = addLista($2, $1); }
+abssyn : archcfg  { yylval.vlista = $1; }
+       ;
+
+archcfg : proceso archcfg { $$ = addLista($2, $1); }
+| /*empty*/       { $$ = (plProcesosSuicidas_t) NULL; }
         ;
 
-proceso: PROCESOSUI ID ABRELLAVE PATH SEPARATOR ID NUMERO CIERRALLAVE 
-{ printf("%s\n", $6); $$ = createProcesoSuicida($2, $4, $6, $7); }
+proceso : PROCESOSUI ID ABRELLAVE PATH SEPARATOR ID NUMERO CIERRALLAVE 
+         {  $$ = createProcesoSuicida($2, $4, $6, $7); }
         ;
 %%
