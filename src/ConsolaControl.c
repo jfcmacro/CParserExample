@@ -1,44 +1,57 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include "parser.h"
-#include "lexer.h"
+#include <string.h>
 #include "data.h"
+#include "expr.h"
+#include "parserCfg.h"
+#include "parserExprExec.h"
 
 void
 usage(char *progname) {
-  fprintf(stderr, "Usage %s <cfg file>\n", progname);
+  fprintf(stderr, "Usage %s <cfg file> <expr file>\n", progname);
   exit(1);
 }
 
-extern int yyparse();
 
 int 
 main(int argc, char *argv[]) {
 
-  if (argc != 2) {
+  if (argc != 3) {
     usage(argv[0]);
   }
 
-  FILE *inFile = fopen(argv[1], "r");
-  if (!inFile) {
+  FILE *inFile   = fopen(argv[1], "r");
+  FILE *exprFile = fopen(argv[2], "r");
+
+  if (!inFile || 
+      !exprFile) {
     usage(argv[0]);
   }
 
-  yyin = inFile;
+  plProcesosSuicidas_t lProSui = NULL;
 
-  if (!yyparse()) {
-    fprintf(stdout, "¡Parser funcionó!\n");
-    showLProcesosSuicidas(yylval.vlista);
+  if ((lProSui = execParserCfg(inFile))) {
+
+    fprintf(stdout, "¡Parser archivo de configuración funcionó!\n");
+    showLProcesosSuicidas(lProSui);
   }
   else {
-    fprintf(stderr, "¡Parser no funcionó!\n");
+
+    fprintf(stderr, "¡Parser archivo de configuración no funcionó!\n");
+  }
+
+  PNode pExpr = NULL;
+
+  if ((pExpr = execParserExpr(exprFile))) {
+
+    fprintf(stdout, "¡Parser expresion funcionó!\n");
+    fprintf(stdout, "El valor de la expresion es: %d\n", eval(pExpr));
+  }
+  else {
+
+    fprintf(stderr, "¡Parser expresion no funcionó!\n");
   }
   return 0;
 }
 
-void 
-yyerror(const char *msg)
-{
-  fprintf(stderr, "%d: %s at '%s'\n", yylineno, msg, yytext);
-}

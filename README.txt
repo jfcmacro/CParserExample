@@ -18,4 +18,4 @@ Para limpiar el programa y los archivos generados.
 $ make clean
 
 Para ejecutar un ejemplo desde src:
-$ ./ConsolaControl ../examples/Configuracion.cfg
+$ ./ConsolaControl ../examples/Configuracion.cfg ../examples/Expr.expr
